@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.ext.mapper.MemberMapper">
+	<select id="gologin" resultType="Member" parameterType="Member">
+		select * from member where id=#{id} and pw=#{pw}
+	</select>
+	
+	<insert id="gojoin" parameterType="Board">
+		insert into member value(#{id}, #{pw}, #{nick})
+	</insert>
+	
+	<select id="profil" parameterType="String" resultType="Member">
+		select * from member where id=#{id}
+	</select>
+	
+	<update id="updatepw" parameterType="Member">
+		update member set pw=#{pw} where id=#{id}
+	</update>
+	
+	<update id="updatenick" parameterType="Member">
+		update member set nick=#{nick} where id=#{id}
+	</update>
+	
+	<delete id="withdrawal" parameterType="Member">
+		delete from member where id=#{id} and pw=#{pw}
+	</delete>
+</mapper>

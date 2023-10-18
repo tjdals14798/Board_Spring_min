@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.ext.mapper.BoardMapper">
+
+	<select id="boardWithPageing" resultType="Board" parameterType="Criteria">
+		select * from board
+		<choose>
+			<when test="fname != null and fname.equals('title')">
+				where title like concat('%',#{filter},'%')
+			</when>
+			<when test="fname != null and fname.equals('address')">
+				where address like concat('%',#{filter},'%')
+			</when>
+			<when test="fname != null and fname.equals('writer')">
+				where writer like concat('%',#{filter},'%')
+			</when>
+		</choose>
+		order by idx desc
+		limit #{pageStart},#{amount}
+	</select>
+	
+	<select id="boardCount" resultType="int">
+		select count(*) from board
+	</select>
+	
+	<select id="boardContent" resultType="Board" parameterType="int">
+		select * from board where idx=#{idx}
+	</select>
+	
+	<select id="boardChart" resultType="Board" parameterType="String">
+		<choose>
+			<when test="fcname != null and fname.equals('weekly')">
+				SELECT DATE_FORMAT(indate, '%Y%m%d')AS indate, count(*) AS bcnt FROM board
+				GROUP BY DATE_FORMAT(indate, '%Y%m%d') ORDER BY indate DESC limit 7;
+			</when>
+			<when test="fname != null and fname.equals('monthly')">
+				SELECT DATE_FORMAT(indate, '%Y%m')AS indate, count(*) AS bcnt FROM board
+				GROUP BY DATE_FORMAT(indate, '%Y%m') ORDER BY indate DESC limit 12;
+			</when>
+		</choose>
+	</select>
+	
+	<insert id="boardinsert" parameterType="Board">
+		insert into board(title, content, writer, address) values(#{title},#{content},#{writer},#{address})
+	</insert>
+	
+	<delete id="boarddelete" parameterType="int">
+		delete from board where idx=#{idx}
+	</delete>
+	
+	<update id="boardtcupdate" parameterType="Board">
+		update board set title=#{title}, content=#{content} where idx=#{idx}
+	</update>
+	
+	<update id="boardchu" parameterType="int">
+		update board set chu=chu+1 where idx=#{idx}
+	</update>
+	
+	<update id="boardhits" parameterType="int">
+		update board set hits=hits+1 where idx=#{idx}
+	</update>
+	
+</mapper>

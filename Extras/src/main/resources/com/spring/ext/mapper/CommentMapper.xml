@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.ext.mapper.CommentMapper">
+	<select id="comment" resultType="Comment" parameterType="int">
+		select * from comment where board_num=#{idx}
+	</select>
+	
+	<insert id="commentinsert" parameterType="Comment">
+		insert into comment(board_num,c_content,c_writer) values (#{board_num},#{c_content},#{c_writer})
+	</insert>
+	
+	<update id="commentChu" parameterType="int">
+		update comment set c_chu=c_chu+1 where c_idx=#{idx}
+	</update>
+	
+	<delete id="commentDel" parameterType="int">
+		delete from comment where c_idx=#{idx}
+	</delete>
+
+</mapper>
